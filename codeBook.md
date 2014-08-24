@@ -6,45 +6,45 @@ Codebook
 The purpose of this codebook is to explain how the data has been manipulated to obtain two tidy datasets. The R script run_analysis.R puts together all the different steps that shape and summarize the data, to make the transition from raw data to clean data reproducible. 
 This document is structured in two parts: the first part gives some ideas about the six steps that this script performs to achieve the clean datasets; in the second part there is a description of the different R variables that the R script uses in its different steps.
 
-###1. What does the script run_analysis.R do with the raw data?
+###1. What does the script *run_analysis.R* do with the raw data?
 
-First of all, it reads the raw data from the train and test group: 
-* The values for the 561 variables that have been calculated from the signals. Each row represents one of the many experiments, performed by a subject doing a specific activity. It is stored in the files train_x.txt and test_x.txt.
+**First of all**, it reads the raw data from the train and test group: 
+* The values for the 561 variables that have been calculated from the signals. Each row represents one of the many experiments, performed by a subject doing a specific activity. It is stored in the files *train_x.txt* and *test_x.txt*.
 
-* The ID number for the activity that was performed in each experiment. The length of the vector that contains this numbers is the same as the number of rows of the previous dataset. So, every number is related to each row of the previous dataset. It is stored in the files train_y.txt and test_y.txt.
+* The ID number for the activity that was performed in each experiment. The length of the vector that contains this numbers is the same as the number of rows of the previous dataset. So, every number is related to each row of the previous dataset. It is stored in the files *train_y.txt* and *test_y.txt*.
 
-* The subject ID that performed every experiment. Every value corresponds to the same row in the dataset. It is stored in the files subject_train.txt and subject_test.txt.
+* The subject ID that performed every experiment. Every value corresponds to the same row in the dataset. It is stored in the files *subject_train.txt* and *subject_test.txt*.
 
-In the raw data, the number of experiments is divided in these two groups. It is the same as spliting all the rows of each dataframe in to different dataframes. In order to merge the train and test dataframes, the script uses the rbind command.
-The script also reads the name of the 561 variables (or the column names of the first described dataset) from the file features.txt, and the names that correspond to each activity ID from the file activity_labels.txt.
+In the raw data, the number of experiments is divided in these two groups. It is the same as spliting all the rows of each dataframe in to different dataframes. In order to merge the train and test dataframes, the script uses the *rbind* command.
+The script also reads the name of the 561 variables (or the column names of the first described dataset) from the file features.txt, and the names that correspond to each activity ID from the file *activity_labels.txt*.
 
-In the second step, the script looks which variables are a mean or a standard deviation of some value. To do that, it uses the command grep() over the variable names or features, which uses the regular expression "mean([^Freq])|std" to look for that. What we get is an index of the variables we are interested in, and we use that to subset those columns of the dataframe.
+In the **second step**, the script looks which variables are a mean or a standard deviation of some value. To do that, it uses the command *grep()* over the variable names or features, which uses the regular expression *"mean([^Freq])|std"* to look for that. What we get is an index of the variables we are interested in, and we use that to subset those columns of the dataframe.
 
-In the third step, the activity ID’s are merged with its activity name using the command merge() from the reshape2 package.
+In the **third step**, the activity ID’s are merged with its activity name using the command *merge()* from the reshape2 package.
 
-In the fourth step, we finally gather up all the elements to create a new dataframe using the cbind() command. For the values of each row, or experiment, we add the following columns: the subject ID, the activity name and the mean and standard deviation of the signals (which are 66 variables).
+In the **fourth step**, we finally gather up all the elements to create a new dataframe using the *cbind()* command. For the values of each row, or experiment, we add the following columns: the subject ID, the activity name and the mean and standard deviation of the signals (which are 66 variables).
 
-In the fifth step, the script does a bit of summarizing over the previous tidy dataset. We want to create an independent tidy data set with the average of each variable for each activity. To do that, we melt the tidy dataframe that we obtained in the previous step and use the command dcast() to show the average value of each variable in rows for each activity in columns.
+In the **fifth step**, the script does a bit of summarizing over the previous tidy dataset. We want to create an independent tidy data set with the average of each variable for each activity. To do that, we melt the tidy dataframe that we obtained in the previous step and use the command *dcast()* to show the average value of each variable in rows for each activity in columns.
 
-Finally, the sixth step writes the two datasets into a .txt file, separated by space, without row names and with headers.  When reading them in R using read.table(), it is recommended to set the header argument equal  to TRUE. Both .txt files are saved in a new directory called /cleanDatasets, which is created in the working directory.
+Finally, the **sixth step** writes the two datasets into a *.txt* file, separated by space, without row names and with headers.  When reading them in R using *read.table()*, it is recommended to set the header argument equal  to TRUE. Both *.txt* files are saved in a new directory called */cleanDatasets*, which is created in the working directory.
 
 ###2. What are those variables that appear in the script?
 
-* measurements: dataframe of 10299 rows and 561 columns created binding by rows the data from the train_x and test_x files, in this order!
+* **measurements**: dataframe of 10299 rows and 561 columns created binding by rows the data from the *train_x* and *test_x* files, in this order!
 
-* activity: datframe of 10299 rows and 2 columns. The second column contains the activity ID for each experiment or row in the measurements dataframe.
+* **activity**: datframe of 10299 rows and 2 columns. The second column contains the activity ID for each experiment or row in the measurements dataframe.
 
-* subject: dataframe of 10299 rows and 2 columns. The second column contains the the subject ID of the person that performed each experiment, and is linked to each row of the measurements dataframe.
+* **subject**: dataframe of 10299 rows and 2 columns. The second column contains the the subject ID of the person that performed each experiment, and is linked to each row of the measurements dataframe.
 
-* feature_label: dataframe of 561 rows and 2 columns. The second column contains the name of each 561 variables that have been estimated from the signals. After having extracted the variables we are interested in, the number of variable names is reduced to 66 in the step 3 of the script.
+* **feature_label**: dataframe of 561 rows and 2 columns. The second column contains the name of each 561 variables that have been estimated from the signals. After having extracted the variables we are interested in, the number of variable names is reduced to 66 in the step 3 of the script.
 
-* activity_label: dataframe of 6 rows and 2 columns. The first column contains the activity ID, and the second, the activity name.
+* **activity_label**: dataframe of 6 rows and 2 columns. The first column contains the activity ID, and the second, the activity name.
 
-* variables_to_subset: numeric vector that stores the indexes of the variables we are interested in. It is generated by the grep() command in the step 2 of the script.
+* **variables_to_subset**: numeric vector that stores the indexes of the variables we are interested in. It is generated by the grep() command in the step 2 of the script.
 
-* tidy_dataset: dataframe of 10300 rows and 68 columns. The first row is the header, and the other rows are the different experiments. The two first columns are the subject ID and the activity name of the experiment, and the rest are the different mean and standard deviation of the different signals. For more information about what those signals are or how they have been obtained from the Samsung sensors, please read the file features_info.txt. This dataframe first output of the script. It is saved as a text file named tidyDataset.txt
+* **tidy_dataset**: dataframe of 10300 rows and 68 columns. The first row is the header, and the other rows are the different experiments. The two first columns are the subject ID and the activity name of the experiment, and the rest are the different mean and standard deviation of the different signals. For more information about what those signals are or how they have been obtained from the Samsung sensors, please read the file *features_info.txt*. This dataframe first output of the script. It is saved as a text file named *tidyDataset.txt*
 
-* tidy_dataset_melt: this dataframe is created by melting the previous one with the command melt(). As id variables, subject and activity columns have been taken. And the measurement variables are the rest. So, it is a dataframe of 679734 rows and 4 columns. The first column is the subject; the second, the activity name; the third is the variable, and the fourth is the value of this variable. 
+* **tidy_dataset_melt**: this dataframe is created by melting the previous one with the command *melt()*. As id variables, subject and activity columns have been taken. And the measurement variables are the rest. So, it is a dataframe of 679734 rows and 4 columns. The first column is the subject; the second, the activity name; the third is the variable, and the fourth is the value of this variable. 
 
-* average_variable_dataset: dataframe of 66 rows and 7 columns. Each row corresponds to one of the variables of the tidy_dataset. The first column indicates the name of the variable, whereas the other 6 are the different activity names. The values are the average of each variable for each activity. Measure variables have been chosen to be displayed in rows because the shape looks more narrows and it is easier to read. This dataframe the second output of the script. It is saved as a text file named averageDataset.txt.
+* **average_variable_dataset**: dataframe of 66 rows and 7 columns. Each row corresponds to one of the variables of the **tidy_dataset**. The first column indicates the name of the variable, whereas the other 6 are the different activity names. The values are the average of each variable for each activity. Measure variables have been chosen to be displayed in rows because the shape looks more narrows and it is easier to read. This dataframe the second output of the script. It is saved as a text file named *averageDataset.txt*.
 
