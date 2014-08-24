@@ -5,10 +5,10 @@ This repo contains all the files and scripts relative to the course project of t
 
 * **run_analysis.R**: this is a cleaning R script, which performs all the different steps to get a tidy dataset from the raw data given in the UCI HAR dataset.
 To run properly this script, follow these steps:
-1. Copy this script in the same directory as the raw data, usually in the direcotory you get when raw data is unziped.
-2. In R, set the working directory in that directory, where you have both the raw data and the script.
-3. Use the command source("run_analysis.R") to load it into R.
-4. Type run_analysis() to execute the script.
+    1. Copy this script in the same directory as the raw data, usually in the direcotory you get when raw data is unziped.
+    2. In R, set the working directory in that directory, where you have both the raw data and the script.
+    3. Use the command source("run_analysis.R") to load it into R.
+    4. Type run_analysis() to execute the script.
 
 * **codeBook.md**: this markdown file describes all the variables that the R script uses, and what the different steps are.
 * **cleanDatasets**: this directory contains two text files.
