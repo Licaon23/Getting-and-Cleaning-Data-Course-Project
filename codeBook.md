@@ -19,9 +19,13 @@ In the raw data, the number of experiments is divided in these two groups. It is
 The script also reads the name of the 561 variables (or the column names of the first described dataset) from the file features.txt, and the names that correspond to each activity ID from the file activity_labels.txt.
 
 In the second step, the script looks which variables are a mean or a standard deviation of some value. To do that, it uses the command grep() over the variable names or features, which uses the regular expression "mean([^Freq])|std" to look for that. What we get is an index of the variables we are interested in, and we use that to subset those columns of the dataframe.
+
 In the third step, the activity ID’s are merged with its activity name using the command merge() from the reshape2 package.
+
 In the fourth step, we finally gather up all the elements to create a new dataframe using the cbind() command. For the values of each row, or experiment, we add the following columns: the subject ID, the activity name and the mean and standard deviation of the signals (which are 66 variables).
+
 In the fifth step, the script does a bit of summarizing over the previous tidy dataset. We want to create an independent tidy data set with the average of each variable for each activity. To do that, we melt the tidy dataframe that we obtained in the previous step and use the command dcast() to show the average value of each variable in rows for each activity in columns.
+
 Finally, the sixth step writes the two datasets into a .txt file, separated by space, without row names and with headers.  When reading them in R using read.table(), it is recommended to set the header argument equal  to TRUE. Both .txt files are saved in a new directory called /cleanDatasets, which is created in the working directory.
 
 ###2. What are those variables that appear in the script?
